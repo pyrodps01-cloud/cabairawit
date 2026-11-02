@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deteksi Tingkat Kematangan Cabai</title>
+
+<!-- Bagian CSS: mengatur tampilan warna, ukuran, dan posisi elemen -->
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #1b4332, #2d6a4f);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    color: #fff;
+  }
+  h1 { text-align: center; font-size: 1.4rem; margin-bottom: 16px; }
+  .container {
+    width: 100%; max-width: 480px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 16px;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 12px;
+  }
+  #video, #canvasOverlay { width: 100%; border-radius: 12px; background: transparent !important; }
+  .video-wrap { position: relative; width: 100%; }
+  #canvasOverlay { position: absolute; top: 0; left: 0; pointer-events: none; }
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  button {
+    background: #40916c; color: #fff; border: none;
+    padding: 10px 18px; border-radius: 8px; font-size: 0.95rem; cursor: pointer;
+  }
+  button:active { background: #2d6a4f; }
+  .result { width: 100%; background: rgba(0,0,0,0.25); border-radius: 12px; padding: 14px; text-align: center; }
+  .result .label { font-size: 1.6rem; font-weight: bold; }
+  .swatch { width: 40px; height: 40px; border-radius: 50%; margin: 8px auto; border: 2px solid #fff; }
+  .legend { width: 100%; display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 6px; }
+  .legend div { text-align: center; flex: 1; }
+  .dot { width: 16px; height: 16px; border-radius: 50%; margin: 0 auto 4px auto; }
+  select { padding: 8px; border-radius: 8px; border: none; }
+</style>
+</head>
+<body>
+
+<!-- Judul halaman -->
+<h1>Deteksi Tingkat Kematangan</h1>
+
+<div class="container">
+
+  <!-- Dropdown untuk memilih kamera, kalau perangkat punya lebih dari satu -->
+  <select id="cameraSelect"></select>
+
+  <!-- Area video kamera + kotak panduan transparan di atasnya -->
+  <div class="video-wrap">
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvasOverlay"></canvas>
+  </div>
+
+  <!-- Tombol kontrol -->
+  <div class="controls">
+    <button id="startBtn">Mulai Kamera</button>
+    <button id="switchBtn">Ganti Kamera</button>
+  </div>
+
+  <!-- Kotak hasil deteksi -->
+  <div class="result">
+    <div>Status Kematangan:</div>
+    <div class="label" id="resultLabel">-</div>
+    <div class="swatch" id="colorSwatch"></div>
+    <div id="resultDetail">Arahkan kamera ke buah cabai di dalam kotak</div>
+  </div>
+
+  <!-- Legenda 4 tahap warna -->
+  <div class="legend">
+    <div><div class="dot" style="background:#2d6a4f"></div>Hijau<br>Mentah</div>
+    <div><div class="dot" style="background:#e8780a"></div>Oranye<br>Setengah Matang</div>
+    <div><div class="dot" style="background:#c1121f"></div>Merah<br>Matang</div>
+  </div>
+</div>
+<!-- Canvas tersembunyi, dipakai di belakang layar untuk mengambil data piksel -->
+<canvas id="hiddenCanvas" style="display:none;"></canvas>
+<!-- Memanggil file JavaScript yang berisi logika kamera dan deteksi warna -->
+<script src="script.js"></script>
+</body>
+</html>
